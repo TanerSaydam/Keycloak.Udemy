@@ -21,4 +21,14 @@ public sealed class RolesController(
 
         return StatusCode(response.StatusCode, response);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetByName(string name, CancellationToken cancellationToken)
+    {
+        string enpoint = $"{options.Value.HostName}/admin/realms/{options.Value.Realm}/clients/{options.Value.ClientUUID}/roles/{name}";
+
+        var response = await keycloakService.GetAsync<RoleDto>(enpoint, true, cancellationToken);
+
+        return StatusCode(response.StatusCode, response);
+    }
 }
