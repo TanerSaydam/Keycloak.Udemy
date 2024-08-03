@@ -26,4 +26,19 @@ public sealed class UserRolesController(
         return StatusCode(response.StatusCode, response);
     }
 
+    [HttpDelete]
+    public async Task<IActionResult> UnassignmentRolesByUserId(Guid id, List<RoleDto> request, CancellationToken cancellationToken)
+    {
+        string enpoint = $"{options.Value.HostName}/admin/realms/{options.Value.Realm}/users/{id}/role-mappings/clients/{options.Value.ClientUUID}";
+
+        var response = await keycloakService.DeleteAsync<string>(enpoint, request, true, cancellationToken);
+
+        if (response.IsSuccessful && response.Data is null)
+        {
+            response.Data = "Roles unassignments is successful";
+        }
+
+        return StatusCode(response.StatusCode, response);
+    }
+
 }
