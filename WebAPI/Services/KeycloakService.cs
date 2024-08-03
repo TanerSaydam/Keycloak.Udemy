@@ -15,7 +15,7 @@ public sealed class KeycloakService(
     {
         HttpClient client = new();
 
-        string enpoint = $"{options.Value.HostName}/realms/{options.Value.Realm}/protocol/openid-connect/token";
+        string endpoint = $"{options.Value.HostName}/realms/{options.Value.Realm}/protocol/openid-connect/token";
 
         List<KeyValuePair<string, string>> data = new();
         KeyValuePair<string, string> grantType = new("grant_type", "client_credentials");
@@ -27,7 +27,7 @@ public sealed class KeycloakService(
         data.Add(clientSecret);
 
 
-        Result<GetAccessTokenResponseDto> result = await PostUrlEncodedFormAsync<GetAccessTokenResponseDto>(enpoint, data, false, cancellationToken);
+        Result<GetAccessTokenResponseDto> result = await PostUrlEncodedFormAsync<GetAccessTokenResponseDto>(endpoint, data, false, cancellationToken);
 
         return result.Data!.AccessToken;
     }
@@ -52,8 +52,14 @@ public sealed class KeycloakService(
 
         if (!message.IsSuccessStatusCode)
         {
-            var errorResultForBadRequest = JsonSerializer.Deserialize<BadRequestErrorResponseDto>(response);
-            return Result<T>.Failure(errorResultForBadRequest!.ErrorMessage);
+            if (message.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var errorResultForBadRequest = JsonSerializer.Deserialize<BadRequestErrorResponseDto>(response);
+                return Result<T>.Failure(errorResultForBadRequest!.ErrorDescription);
+            }
+
+            var errorResultForOther = JsonSerializer.Deserialize<ErrorResponseDto>(response);
+            return Result<T>.Failure(errorResultForOther!.ErrorMessage);
         }
 
         if (message.StatusCode == HttpStatusCode.Created || message.StatusCode == HttpStatusCode.NoContent)
@@ -84,8 +90,19 @@ public sealed class KeycloakService(
 
         if (!message.IsSuccessStatusCode)
         {
-            var errorResultForBadRequest = JsonSerializer.Deserialize<BadRequestErrorResponseDto>(response);
-            return Result<T>.Failure(errorResultForBadRequest!.ErrorMessage);
+            if (message.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var errorResultForBadRequest = JsonSerializer.Deserialize<BadRequestErrorResponseDto>(response);
+                return Result<T>.Failure(errorResultForBadRequest!.ErrorDescription);
+            }
+            else if (message.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                var errorResultForBadRequest = JsonSerializer.Deserialize<BadRequestErrorResponseDto>(response);
+                return Result<T>.Failure(errorResultForBadRequest!.ErrorDescription);
+            }
+
+            var errorResultForOther = JsonSerializer.Deserialize<ErrorResponseDto>(response);
+            return Result<T>.Failure(errorResultForOther!.ErrorMessage);
         }
 
         if (message.StatusCode == HttpStatusCode.Created || message.StatusCode == HttpStatusCode.NoContent)
