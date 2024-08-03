@@ -51,4 +51,19 @@ public sealed class UsersController(
 
         return StatusCode(response.StatusCode, response);
     }
+
+    [HttpPut]
+    public async Task<IActionResult> Update(Guid id, UpdateUserDto request, CancellationToken cancellationToken = default)
+    {
+        string endpoint = $"{options.Value.HostName}/admin/realms/{options.Value.Realm}/users/{id}";
+
+        var response = await keycloakService.PutAsync<string>(endpoint, request, true, cancellationToken);
+
+        if (response.IsSuccessful && response.Data is null)
+        {
+            response.Data = "User update is successful";
+        }
+
+        return StatusCode(response.StatusCode, response);
+    }
 }

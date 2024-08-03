@@ -2,14 +2,8 @@
 
 namespace WebAPI.DTOs;
 
-public sealed class UserDto
+public sealed record UpdateUserDto
 {
-    [JsonPropertyName("id")]
-    public Guid Id { get; set; }
-
-    [JsonPropertyName("username")]
-    public string Username { get; set; } = default!;
-
     [JsonPropertyName("firstName")]
     public string FirstName { get; set; } = default!;
 
@@ -21,9 +15,6 @@ public sealed class UserDto
 
     [JsonPropertyName("emailVerified")]
     public bool EmailVerified { get; set; }
-
-    [JsonPropertyName("createdTimestamp")]
-    public long CreatedTimestamp { get; set; }
 
     [JsonPropertyName("enabled")]
     public bool Enabled { get; set; }
