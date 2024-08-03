@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using WebAPI.DTOs;
 using WebAPI.Options;
@@ -7,6 +8,7 @@ using WebAPI.Services;
 namespace WebAPI.Controllers;
 [Route("api/[controller]/[action]")]
 [ApiController]
+[Authorize]
 public sealed class UsersController(
     KeycloakService keycloakService,
     IOptions<KeycloakConfiguration> options) : ControllerBase
