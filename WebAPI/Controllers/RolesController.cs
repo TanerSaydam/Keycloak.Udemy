@@ -31,4 +31,19 @@ public sealed class RolesController(
 
         return StatusCode(response.StatusCode, response);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateRoleDto request, CancellationToken cancellationToken)
+    {
+        string enpoint = $"{options.Value.HostName}/admin/realms/{options.Value.Realm}/clients/{options.Value.ClientUUID}/roles";
+
+        var response = await keycloakService.PostAsync<string>(enpoint, request, true, cancellationToken);
+
+        if (response.IsSuccessful && response.Data is null)
+        {
+            response.Data = "Role create is successful";
+        }
+
+        return StatusCode(response.StatusCode, response);
+    }
 }
