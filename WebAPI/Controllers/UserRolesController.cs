@@ -41,4 +41,15 @@ public sealed class UserRolesController(
         return StatusCode(response.StatusCode, response);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAllUserRolesByUserId(Guid id, CancellationToken cancellationToken)
+    {
+        string enpoint = $"{options.Value.HostName}/admin/realms/{options.Value.Realm}/users/{id}/role-mappings/clients/{options.Value.ClientUUID}";
+
+        var response = await keycloakService.GetAsync<object>(enpoint, true, cancellationToken);
+
+
+        return StatusCode(response.StatusCode, response);
+    }
+
 }
