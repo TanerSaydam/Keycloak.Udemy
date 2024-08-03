@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System.Text;
-using System.Text.Json;
 using WebAPI.DTOs;
 using WebAPI.Options;
 using WebAPI.Services;
@@ -38,32 +36,13 @@ public sealed class AuthController(
         };
 
 
-        string stringData = JsonSerializer.Serialize(data);
-        var content = new StringContent(stringData, Encoding.UTF8, "application/json");
+        var response = await keycloakService.PostAsync<string>(endpoint, data, true, cancellationToken);
 
-        HttpClient httpClient = new();
-
-        string token = await keycloakService.GetAccessToken();
-
-        httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
-
-        var message = await httpClient.PostAsync(endpoint, content, cancellationToken);
-
-        if (!message.IsSuccessStatusCode)
+        if (response.IsSuccessful && response.Data is null)
         {
-            var response = await message.Content.ReadAsStringAsync();
-
-            if (message.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            {
-                var errorResultForBadRequest = JsonSerializer.Deserialize<BadRequestErrorResponseDto>(response);
-
-                return BadRequest(new { ErrorMessage = errorResultForBadRequest!.ErrorMessage });
-            }
-
-            var errorResultForOther = JsonSerializer.Deserialize<BadRequestErrorResponseDto>(response);
-            return BadRequest(new { ErrorMessage = errorResultForOther!.ErrorMessage });
+            response.Data = "User create is successful";
         }
 
-        return Ok(new { Message = "User create was succesful" });
+        return StatusCode(response.StatusCode, response);
     }
 }
