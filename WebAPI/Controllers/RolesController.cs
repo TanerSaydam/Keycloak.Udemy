@@ -46,4 +46,19 @@ public sealed class RolesController(
 
         return StatusCode(response.StatusCode, response);
     }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteByName(string name, CancellationToken cancellationToken)
+    {
+        string enpoint = $"{options.Value.HostName}/admin/realms/{options.Value.Realm}/clients/{options.Value.ClientUUID}/roles/{name}";
+
+        var response = await keycloakService.DeleteAsync<string>(enpoint, true, cancellationToken);
+
+        if (response.IsSuccessful && response.Data is null)
+        {
+            response.Data = "Role delete is successful";
+        }
+
+        return StatusCode(response.StatusCode, response);
+    }
 }
