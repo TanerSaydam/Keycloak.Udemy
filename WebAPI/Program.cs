@@ -12,6 +12,8 @@ builder.Services.Configure<KeycloakConfiguration>(builder.Configuration.GetSecti
 
 builder.Services.AddScoped<KeycloakService>();
 
+builder.Services.AddControllers();
+
 var app = builder.Build();
 
 app.UseSwagger();
@@ -25,5 +27,8 @@ app.MapGet("/get-access-token", async (KeycloakService keycloakService) =>
 
     return Results.Ok(new { AccessToken = token });
 });
+
+
+app.MapControllers();
 
 app.Run();

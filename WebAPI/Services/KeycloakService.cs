@@ -37,8 +37,8 @@ public sealed class KeycloakService(
                 throw new ArgumentException(errorResultForBadRequest!.ErrorMessage);
             }
 
-            var errorResultForOther = JsonSerializer.Deserialize<ErrorResponseDto>(response);
-            throw new ArgumentException(errorResultForOther!.ErrorDescription);
+            var errorResultForOther = JsonSerializer.Deserialize<BadRequestErrorResponseDto>(response);
+            throw new ArgumentException(errorResultForOther!.ErrorMessage);
         }
 
         var result = JsonSerializer.Deserialize<GetAccessTokenResponseDto>(response);
