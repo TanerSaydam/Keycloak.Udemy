@@ -1,1 +1,45 @@
-<p>users works!</p>
+<div class="mt-4">
+    <h1>Users Page</h1>
+</div>
+<div class="mt-4">
+    <flexi-grid
+    [data]="users()"
+    [showCaption]="true"
+    captionTitle="User List"
+    [showExportExcel]="true"
+    [filterable]="true"
+    [sortable]="true"
+    [draggable]="true"
+    themeClass="light"
+    >        
+        <flexi-grid-column field="username" title="User Name"></flexi-grid-column>
+        <flexi-grid-column field="firstName" title="First Name"></flexi-grid-column>
+        <flexi-grid-column field="lastName" title="Last Name"></flexi-grid-column>
+        <flexi-grid-column field="email" title="Email"></flexi-grid-column>
+        <flexi-grid-column field="emailVerified" textAlign="center" title="Email Verified" [columnTemplate]="emailVerifiedColumnTemplate">
+            <ng-template #emailVerifiedColumnTemplate let-item="item">
+                @if(item.emailVerified){
+                    <span class="my-alert alert-success">Verified</span>
+                }@else {
+                    <span class="my-alert alert-danger">Not Verified</span>
+                }                
+            </ng-template>
+        </flexi-grid-column>
+        <flexi-grid-column field="enabled" textAlign="center" title="Is Active" [columnTemplate]="enabledColumnTemplate">
+            <ng-template #enabledColumnTemplate let-item="item">
+                @if(item.enabled){
+                    <span class="my-alert alert-success">Active</span>
+                }@else {
+                    <span class="my-alert alert-danger">Passive</span>
+                }                
+            </ng-template>
+        </flexi-grid-column>
+        <flexi-grid-column title="Operations" textAlign="center" [columnTemplate]="operationsColumnTemplate">
+            <ng-template #operationsColumnTemplate let-item="item">
+                <button class="btn btn-outline-danger">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </ng-template>
+        </flexi-grid-column>
+</flexi-grid>
+</div>

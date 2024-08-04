@@ -8,14 +8,22 @@ import { FlexiToastService } from 'flexi-toast';
 })
 export class HttpService {
   api = signal<string>("https://localhost:7042/api");
-
+  token = signal<string>("");
   constructor(
     private http :HttpClient,
     private toast: FlexiToastService
-  ) { }
+  ) { 
+
+    this.token.set(localStorage.getItem("access-token")!);
+
+  }
 
   get<T>(endpoint: string, callback: (res:T)=> void){
-    this.http.get<ResultModel<T>>(`${this.api()}/${endpoint}`).subscribe({
+    this.http.get<ResultModel<T>>(`${this.api()}/${endpoint}`,{
+      headers: {
+        "Authorization": "Bearer " + this.token()
+      }
+    }).subscribe({
       next: (res)=> {
         callback(res.data!);
       },
@@ -26,7 +34,11 @@ export class HttpService {
   }
 
   post<T>(endpoint: string, body: any, callback: (res:T)=> void){
-    this.http.post<ResultModel<T>>(`${this.api()}/${endpoint}`, body).subscribe({
+    this.http.post<ResultModel<T>>(`${this.api()}/${endpoint}`, body,{
+      headers: {
+        "Authorization": "Bearer " + this.token()
+      }
+    }).subscribe({
       next: (res)=> {
         callback(res.data!);
       },
@@ -37,7 +49,11 @@ export class HttpService {
   }
 
   put<T>(endpoint: string, body: any, callback: (res:T)=> void){
-    this.http.put<ResultModel<T>>(`${this.api()}/${endpoint}`, body).subscribe({
+    this.http.put<ResultModel<T>>(`${this.api()}/${endpoint}`, body,{
+      headers: {
+        "Authorization": "Bearer " + this.token()
+      }
+    }).subscribe({
       next: (res)=> {
         callback(res.data!);
       },
@@ -48,7 +64,11 @@ export class HttpService {
   }
 
   delete<T>(endpoint: string, callback: (res:T)=> void){
-    this.http.delete<ResultModel<T>>(`${this.api()}/${endpoint}`).subscribe({
+    this.http.delete<ResultModel<T>>(`${this.api()}/${endpoint}`,{
+      headers: {
+        "Authorization": "Bearer " + this.token()
+      }
+    }).subscribe({
       next: (res)=> {
         callback(res.data!);
       },
@@ -56,18 +76,7 @@ export class HttpService {
         this.errorHandler(err);
       }),
     })
-  }
-
-  deleteWithBody<T>(endpoint: string, body:any, callback: (res:T)=> void){
-    this.http.delete<ResultModel<T>>(`${this.api()}/endpoint`, body).subscribe({
-      next: (res:any)=> {
-        callback(res.data!);
-      },
-      error: ((err: HttpErrorResponse) => {
-          this.errorHandler(err);
-      }),
-    })
-  }
+  } 
 
   errorHandler(err: HttpErrorResponse){
     if(err.status === 401 || err.status === 403){
