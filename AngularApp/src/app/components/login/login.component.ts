@@ -6,6 +6,7 @@ import { ResultModel } from '../../models/result.model';
 import { LoginResponseModel } from '../../models/login.response.model';
 import {FlexiToastService} from 'flexi-toast'
 import {FormsModule} from '@angular/forms'
+import { HttpService } from '../../services/http.service';
 
 @Component({
   selector: 'app-login',
@@ -18,28 +19,16 @@ export class LoginComponent {
   model = signal<LoginModel>(new LoginModel());
 
   constructor(
-    private http: HttpClient,
+    private http: HttpService,
     private router: Router,
     private toast: FlexiToastService
   ){}
 
   login(){
-    this.http.post<ResultModel<LoginResponseModel>>("https://localhost:7042/api/Auth/Login", this.model()).subscribe({
-      next: (res)=> {
-        localStorage.setItem("access-token", res.data!.access_token);
-        this.router.navigateByUrl("/");
-        this.toast.showToast("Success","Login is successful");
-      },
-      error: ((err: HttpErrorResponse) => {
-        if(err.error.errorMessages){
-          const e = err.error.errorMessages;
-          e.forEach((el:string) => {
-            this.toast.showToast("Error",el, "error");    
-          });
-        }else{
-          this.toast.showToast("Error","Something went wrong", "error");
-        }        
-      }),
-    })
+    this.http.post<LoginResponseModel>("Auth/Login", this.model(), (res)=> {
+      localStorage.setItem("access-token", res.access_token);
+      this.router.navigateByUrl("/");
+      this.toast.showToast("Success","Login is successful");
+    });
   }
 }
