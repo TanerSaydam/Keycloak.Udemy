@@ -1,1 +1,25 @@
-<p>roles works!</p>
+<div class="mt-4">
+    <h1>Roles Page</h1>
+</div>
+<div class="mt-4">
+    <flexi-grid
+    [data]="roles()"
+    [showCaption]="true"
+    captionTitle="Role List"
+    [showExportExcel]="true"
+    [filterable]="true"
+    [sortable]="true"
+    [draggable]="true"
+    themeClass="light"
+    >        
+        <flexi-grid-column field="id" title="Id"></flexi-grid-column>
+        <flexi-grid-column field="name" title="Name"></flexi-grid-column>
+        <flexi-grid-column title="Operations" textAlign="center" [columnTemplate]="operationsColumnTemplate">
+            <ng-template #operationsColumnTemplate let-item="item">
+                <button (click)="deleteById(item.name)" class="btn btn-outline-danger">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </ng-template>
+        </flexi-grid-column>
+</flexi-grid>
+</div>
