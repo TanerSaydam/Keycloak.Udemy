@@ -1,31 +1,31 @@
 <div class="row" style="max-width: 98vw;">
     <div class="col-8">
         <img src="https://gkudde.in/enquiry/assets/images/error/login-img.jpg" 
-        style="width: 98%; height: 890px; object-fit: cover;">
+        style="width: 98%; height: 910px; object-fit: cover;">
     </div>
     <div class="col-4 d-flex justify-content-center align-items-center">
         <div class="card" style="width: 90%;">
             <div class="card-header">
                 <h1>Login Page</h1> 
-                <p>If you want login please fill your information</p>
+                <p>If you want login please enter your information</p>
             </div>
 
             <div class="card-body">
                 <div class="form-group">
                     <label>UserName</label>
-                    <input type="text" class="form-control">
+                    <input [(ngModel)]="model().userName" type="text" class="form-control">
                 </div>
 
                 <div class="form-group mt-2">
                     <label>Password</label>
-                    <input type="password" class="form-control">
+                    <input [(ngModel)]="model().password" type="password" class="form-control">
                 </div>
 
                 <div class="form-group mt-2">
-                    <button class="btn btn-dark w-100">Sign In</button>
+                    <button class="btn btn-dark w-100" (click)="login()">Sign In</button>
                 </div>
                 <div class="form-group mt-2" style="float: right;">
-                    <a routerLink="/register">If you don't have a account. Sign up now!</a>
+                    <a routerLink="/register">If you don't have an account. Sign up now!</a>
                 </div>
             </div>
         </div>
