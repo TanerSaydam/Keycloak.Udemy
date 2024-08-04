@@ -15,89 +15,45 @@ export class HttpService {
   ) { }
 
   get<T>(endpoint: string, callback: (res:T)=> void){
-    this.http.get<ResultModel<T>>(`${this.api()}/endpoint`).subscribe({
+    this.http.get<ResultModel<T>>(`${this.api()}/${endpoint}`).subscribe({
       next: (res)=> {
         callback(res.data!);
       },
       error: ((err: HttpErrorResponse) => {
-          if(err.status === 401 || err.status === 403){
-            this.toast.showToast("Error","You are not authorized", "error");            
-          }else{
-            if(err.error.errorMessages){
-              const e = err.error.errorMessages;
-              e.forEach((el:string) => {
-                this.toast.showToast("Error",el, "error");    
-              });
-            }else{
-              this.toast.showToast("Error","Something went wrong", "error");
-            }
-          }
+        this.errorHandler(err);
       }),
     })  
   }
 
   post<T>(endpoint: string, body: any, callback: (res:T)=> void){
-    this.http.post<ResultModel<T>>(`${this.api()}/endpoint`, body).subscribe({
+    this.http.post<ResultModel<T>>(`${this.api()}/${endpoint}`, body).subscribe({
       next: (res)=> {
         callback(res.data!);
       },
       error: ((err: HttpErrorResponse) => {
-          if(err.status === 401 || err.status === 403){
-            this.toast.showToast("Error","You are not authorized", "error");            
-          }else{
-            if(err.error.errorMessages){
-              const e = err.error.errorMessages;
-              e.forEach((el:string) => {
-                this.toast.showToast("Error",el, "error");    
-              });
-            }else{
-              this.toast.showToast("Error","Something went wrong", "error");
-            }
-          }
+        this.errorHandler(err);
       }),
     })
   }
 
   put<T>(endpoint: string, body: any, callback: (res:T)=> void){
-    this.http.put<ResultModel<T>>(`${this.api()}/endpoint`, body).subscribe({
+    this.http.put<ResultModel<T>>(`${this.api()}/${endpoint}`, body).subscribe({
       next: (res)=> {
         callback(res.data!);
       },
       error: ((err: HttpErrorResponse) => {
-          if(err.status === 401 || err.status === 403){
-            this.toast.showToast("Error","You are not authorized", "error");            
-          }else{
-            if(err.error.errorMessages){
-              const e = err.error.errorMessages;
-              e.forEach((el:string) => {
-                this.toast.showToast("Error",el, "error");    
-              });
-            }else{
-              this.toast.showToast("Error","Something went wrong", "error");
-            }
-          }
+        this.errorHandler(err);
       }),
     })
   }
 
   delete<T>(endpoint: string, callback: (res:T)=> void){
-    this.http.delete<ResultModel<T>>(`${this.api()}/endpoint`).subscribe({
+    this.http.delete<ResultModel<T>>(`${this.api()}/${endpoint}`).subscribe({
       next: (res)=> {
         callback(res.data!);
       },
       error: ((err: HttpErrorResponse) => {
-          if(err.status === 401 || err.status === 403){
-            this.toast.showToast("Error","You are not authorized", "error");            
-          }else{
-            if(err.error.errorMessages){
-              const e = err.error.errorMessages;
-              e.forEach((el:string) => {
-                this.toast.showToast("Error",el, "error");    
-              });
-            }else{
-              this.toast.showToast("Error","Something went wrong", "error");
-            }
-          }
+        this.errorHandler(err);
       }),
     })
   }
@@ -108,19 +64,27 @@ export class HttpService {
         callback(res.data!);
       },
       error: ((err: HttpErrorResponse) => {
-          if(err.status === 401 || err.status === 403){
-            this.toast.showToast("Error","You are not authorized", "error");            
-          }else{
-            if(err.error.errorMessages){
-              const e = err.error.errorMessages;
-              e.forEach((el:string) => {
-                this.toast.showToast("Error",el, "error");    
-              });
-            }else{
-              this.toast.showToast("Error","Something went wrong", "error");
-            }
-          }
+          this.errorHandler(err);
       }),
     })
+  }
+
+  errorHandler(err: HttpErrorResponse){
+    if(err.status === 401 || err.status === 403){
+      this.toast.showToast("Error","You are not authorized", "error");            
+    }else{
+      if(err.error.errorMessages){
+        const e = err.error.errorMessages;
+        e.forEach((el:string) => {
+          if(el === null){
+            this.toast.showToast("Error","Something went wrong", "error");
+          }else{
+            this.toast.showToast("Error",el, "error");
+          }
+        });
+      }else{
+        this.toast.showToast("Error","Something went wrong", "error");
+      }
+    }
   }
 }

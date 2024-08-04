@@ -1,1 +1,48 @@
-<p>register works!</p>
+<div class="row" style="max-width: 98vw;">
+    <div class="col-8">
+        <img src="https://gkudde.in/enquiry/assets/images/error/login-img.jpg" 
+        style="width: 98%; height: 910px; object-fit: cover;">
+    </div>
+    <div class="col-4 d-flex justify-content-center align-items-center">
+        <div class="card" style="width: 90%;">
+            <div class="card-header">
+                <h1>Register Page</h1> 
+                <p>If you want register please enter your information</p>
+            </div>
+
+            <div class="card-body">
+                <div class="form-group">
+                    <label>FirstName</label>
+                    <input [(ngModel)]="model().firstName" type="text" class="form-control">
+                </div>
+
+                <div class="form-group mt-2">
+                    <label>LastName</label>
+                    <input [(ngModel)]="model().lastName" type="text" class="form-control">
+                </div>
+
+                <div class="form-group mt-2">
+                    <label>UserName</label>
+                    <input [(ngModel)]="model().userName" type="text" class="form-control">
+                </div>
+
+                <div class="form-group mt-2">
+                    <label>Email</label>
+                    <input [(ngModel)]="model().email" type="text" class="form-control">
+                </div>
+
+                <div class="form-group mt-2">
+                    <label>Password</label>
+                    <input [(ngModel)]="model().password" type="password" class="form-control">
+                </div>
+
+                <div class="form-group mt-2">
+                    <button class="btn btn-dark w-100" (click)="login()">Sign Up</button>
+                </div>
+                <div class="form-group mt-2" style="float: right;">
+                    <a routerLink="/login">If you have an account already. Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
