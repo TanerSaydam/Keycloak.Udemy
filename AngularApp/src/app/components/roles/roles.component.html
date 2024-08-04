@@ -11,7 +11,14 @@
     [sortable]="true"
     [draggable]="true"
     themeClass="light"
+    [captionTemplate]="captionTemplate"
     >        
+        <ng-template #captionTemplate>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+        </ng-template>
+
         <flexi-grid-column field="id" title="Id"></flexi-grid-column>
         <flexi-grid-column field="name" title="Name"></flexi-grid-column>
         <flexi-grid-column title="Operations" textAlign="center" [columnTemplate]="operationsColumnTemplate">
@@ -23,3 +30,29 @@
         </flexi-grid-column>
 </flexi-grid>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Add Role Form</h1>
+          <button type="button" class="btn-close" #addModalCloseBtn data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Role Name</label>
+            <input type="text" class="form-control" [(ngModel)]="name">
+          </div>
+
+          <div class="form-group mt-1">
+            <label>Role Description</label>
+            <input type="text" class="form-control" [(ngModel)]="description">
+          </div>
+        </div>
+        <div class="modal-footer">          
+          <button (click)="save()" type="button" class="btn btn-primary w-100">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
