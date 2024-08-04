@@ -74,7 +74,6 @@ public sealed class UsersController(
     }
 
     [HttpDelete]
-    [Authorize("UserDelete")]
     public async Task<IActionResult> DeleteById(Guid id, CancellationToken cancellationToken = default)
     {
         string endpoint = $"{options.Value.HostName}/admin/realms/{options.Value.Realm}/users/{id}";
