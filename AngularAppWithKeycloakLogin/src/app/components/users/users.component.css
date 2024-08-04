@@ -1,0 +1,18 @@
+.my-alert{
+    border: 1px solid;
+    padding: 5px;
+}
+
+.alert-success{
+    background-color: #198754;
+    border-color: #198754 !important;    
+    border-radius: 10px;
+    color: white;
+}
+
+.alert-danger{
+    background-color: rgb(220, 53, 69);
+    border-color: rgb(220, 53, 69) !important;    
+    border-radius: 10px;
+    color: white;
+}
