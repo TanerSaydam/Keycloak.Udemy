@@ -21,6 +21,7 @@
     "flexi-grid": "^18.7.0",
     "flexi-select": "^18.2.1",
     "flexi-toast": "^18.0.9",
+    "keycloak-angular": "^16.0.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
